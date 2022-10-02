@@ -1,0 +1,88 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Updated daily, this skill gives you New York Times news. Say \"Alexa open flash briefing\" to get started. Data provided by The New York Times.",
+          "examplePhrases": [
+            "Alexa open flash news new york times",
+            "Alexa begin flash news new york times"
+          ],
+          "keywords": [
+            "news",
+            "New York Times",
+            "New York Times News"
+          ],
+          "name": "Unofficial Copy of New York Times Flash Briefing",
+          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png",
+          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png",
+          "description": "Updated daily, this skill gives you today's news. Data provided by The New York Times. This skill is best used with Echo or Echo Dot. Say \"Alexa open flash briefing\" to get started. "
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "NEWS",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-unofficialcopyofnewyor-default-default-1664647625548"
+        },
+        "interfaces": [
+          {
+            "type": "ALEXA_PRESENTATION_APL",
+            "supportedViewports": [
+              {
+                "mode": "HUB",
+                "shape": "ROUND",
+                "minWidth": 100,
+                "maxWidth": 599,
+                "minHeight": 100,
+                "maxHeight": 599
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 600,
+                "maxHeight": 959,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 600,
+                "maxHeight": 1279,
+                "minWidth": 1280,
+                "maxWidth": 1920
+              },
+              {
+                "mode": "TV",
+                "shape": "RECTANGLE",
+                "minHeight": 540,
+                "maxHeight": 540,
+                "minWidth": 960,
+                "maxWidth": 960
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "locales": {
+        "en-US": {
+          "privacyPolicyUrl": "http://learnin60seconds.com/tos",
+          "termsOfUseUrl": "http://learnin60seconds.com/tos"
+        }
+      },
+      "allowsPurchases": false,
+      "usesPersonalInfo": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "containsAds": false
+    }
+  }
+}
