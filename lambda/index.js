@@ -70,6 +70,8 @@ const GetNewsIntentHandler = {
         sessionAttributes.lastSpeech = response_clean;
         var display_text = (ALL_NEWS_SET[0][0]).replace(/\&/ig, 'and')
         var display_image = ALL_NEWS_SET[NEWSINDEX][4] ? "https://static01.nyt.com/"+ALL_NEWS_SET[NEWSINDEX][4] : "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/social-media-1989152_640.jpg";
+        var height = ALL_NEWS_SET[NEWSINDEX][5] ? ALL_NEWS_SET[NEWSINDEX][5] : "";
+        var width =  ALL_NEWS_SET[NEWSINDEX][6] ? ALL_NEWS_SET[NEWSINDEX][6] : "";
 
 
         const speakOutput = response_clean+" "+"Would you like more news?";
@@ -88,6 +90,8 @@ const GetNewsIntentHandler = {
                   text: display_text,
                   title: SKILL_NAME,
                   url:display_image,
+                  height:height,
+                  width: width,
                   //logo:"https://monkeyfacts.s3.ap-south-1.amazonaws.com/icon_512_A2Z.png"
                 },
               },

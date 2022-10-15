@@ -120,7 +120,7 @@
     },
     "layouts": {},
     "mainTemplate": {
-        "description": "********* Full-screen background image **********",
+        "description": "*********  **********",
         "parameters": [
             "payload"
         ],
@@ -133,9 +133,9 @@
                     {
                         "type": "Image",
                         "source": "${payload.response.url}",
-                        "position": "absolute",
-                        "width": "50vw",
-                        "height": "10vh",
+                        "position": "bottom-right",
+                        "width": "${payload.response.width}",
+                        "height": "${payload.response.height}",
                         "scale": "best-fill"
                     },
                     {
@@ -168,9 +168,9 @@
                     {
                         "type": "Image",
                         "source": "${payload.response.url}",
-                        "position": "absolute",
-                        "width": "100vw",
-                        "height": "100vh",
+                        "position": "bottom-right",
+                        "width": "${payload.response.width}",
+                        "height": "${payload.response.height}",
                         "scale": "best-fill"
                     },
                     {
