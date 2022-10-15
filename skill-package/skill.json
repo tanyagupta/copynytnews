@@ -14,8 +14,8 @@
             "New York Times News"
           ],
           "name": "Unofficial Copy of New York Times Flash Briefing",
-          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png",
-          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png",
+          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png?token=GHSAT0AAAAAABZORT5WJ7LTFHJAZG2WE6KKY2LAOQQ",
+          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png?token=GHSAT0AAAAAABZORT5W3F5Z2G3KJ6SSCA3EY2LAPFA",
           "description": "Updated daily, this skill gives you today's news. Data provided by The New York Times. This skill is best used with Echo or Echo Dot. Say \"Alexa open flash briefing\" to get started. "
         }
       },
