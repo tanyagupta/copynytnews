@@ -19,6 +19,8 @@
       "headerAttributionImage": "${imageListData.headerAttributionImage}",
       "imageSource": "${imageListData.properties.listItemsToShow.imageSource}",
        "primaryText": "${imageListData.properties.listItemsToShow.primaryText}",
+       "secondaryText": "${imageListData.properties.listItemsToShow.secondaryText}",
+       "providerText": "Courtesy of New York Times API",
       "headerBackButton": false,
       "headerTitle": "${imageListData.headerTitle}",
       "backgroundImageSource": "${imageListData.backgroundImageSource}"

@@ -41,6 +41,7 @@ const GetNewsIntentHandler = {
          head2 = res[i][2] || ""
          temp["headerTitle"] = head1
          temp["primaryText"] = head1
+         temp["secondaryText"] = head2
          temp["headline"] = head1+". "+head2
          temp["article_url"]=res[i][3]  || ""
          temp["imageSource"]="https://static01.nyt.com/"+res[i][4]  || ""
