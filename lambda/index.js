@@ -17,18 +17,7 @@ const STEP = 5
 var NEWSINDEX
 const LAST_NEWS = "You have now finished hearing about all the news for today";
 
-// const LaunchRequestHandler = {
-//     canHandle(handlerInput) {
-//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
-//     },
-//     handle(handlerInput) {
-//         const speakOutput = 'Would you like to hear the flash briefing for today?';
-//         return handlerInput.responseBuilder
-//             .speak(speakOutput)
-//             .reprompt(speakOutput)
-//             .getResponse();
-//     }
-// };
+
 const GetNewsIntentHandler = {
     canHandle(handlerInput) {
       const request = handlerInput.requestEnvelope.request;
@@ -43,42 +32,33 @@ const GetNewsIntentHandler = {
 
         var info_set = JSON.parse(result)
 
+        var res = info_set
+        var result = []
+        for (var i in res){
+         temp={}
+        //         if(res[i][0].length===0){return}
+         head1 =res[i][0] || ""
+         head2 = res[i][2] || ""
+         temp["headerTitle"] = head1
+         temp["primaryText"] = head1
+         temp["headline"] = head1+". "+head2
+         temp["article_url"]=res[i][3]  || ""
+         temp["imageSource"]="https://static01.nyt.com/"+res[i][4]  || ""
+         temp["img_len"]=res[i][5]  || ""
+         temp["img_wid"]=res[i][6]  || ""
+         temp["author"]=res[i][7] || ""
+         temp["cat1"]=res[i][8] || ""
+         temp["cat2"]=res[i][9] || ""
 
-        //var info_set = [["For Trump and the Nation, a Final Test of Accountability","WASHINGTON — Barely 11 months after President Trump was acquitted in a momentous Senate trial, the nation now confronts the possibility of yet another impeachment battle in the twilight of his presidency, a final showdown that will test the boundaries of politics, accountability and the Constitution.","The push by Democrats to impeach the president for his role in inciting the attack on the Capitol underscores how American politics has been profoundly shaken in ways still hard to measure.","https://www.nytimes.com/2021/01/09/us/politics/trump-impeachment-possible.html","images/2021/01/09/us/politics/09dc-impeach-1/09dc-impeach-1-articleLarge.jpg","By Peter Baker","Washington","U.S.","Politics"]]
-        ALL_NEWS_SET = info_set
-        MAX = Number(ALL_NEWS_SET.length)-1;
-        j=0
-        var response_string = ""
-        for (var i=0;i<STEP;i++){
-
-          response_string=response_string
-          +" "+INTROS[j]
-          +" "+ALL_NEWS_SET[i][0]
-          +"<break time='1s'/>"
-          +" "+ALL_NEWS_SET[i][2]
-          //+"<break time='1s'/>"
-          //+"Here's the lead Para:"
-          //+" "+ALL_NEWS_SET[i][1]
-          +"<break time='2s'/>"+" ";
-          j++
+         result.push(temp)
 
         }
-        NEWSINDEX=STEP+1
-
-        const dummy_news=["First news","second news","third news","fourth news"]
-        var response_clean = response_string.replace(/\&/ig, 'and')
-        sessionAttributes.lastSpeech = response_clean;
-        var display_text = (ALL_NEWS_SET[0][0]).replace(/\&/ig, 'and')
-        var display_image = ALL_NEWS_SET[NEWSINDEX][4] ? "https://static01.nyt.com/"+ALL_NEWS_SET[NEWSINDEX][4] : "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/social-media-1989152_640.jpg";
-        var height = ALL_NEWS_SET[NEWSINDEX][5] ? ALL_NEWS_SET[NEWSINDEX][5] : "";
-        var width =  ALL_NEWS_SET[NEWSINDEX][6] ? ALL_NEWS_SET[NEWSINDEX][6] : "";
 
 
-        const speakOutput = response_clean+" "+"Would you like more news?";
         return handlerInput.responseBuilder
-            .speak(speakOutput)
+            //.speak(speakOutput)
             //.withSimpleCard(SKILL_NAME,"HELLO")
-            .withStandardCard(SKILL_NAME,display_text,display_image)
+//            .withStandardCard(SKILL_NAME,display_text,display_image)
             .withShouldEndSession(false)
             .reprompt('Would you like some more news?')
             .addDirective({
@@ -86,14 +66,25 @@ const GetNewsIntentHandler = {
               version: '1.0',
               document: mydocument,
               datasources: {
-                response: {
-                  text: display_text,
-                  title: SKILL_NAME,
-                  url:display_image,
-                  height:height,
-                  width: width,
-                  //logo:"https://monkeyfacts.s3.ap-south-1.amazonaws.com/icon_512_A2Z.png"
-                },
+                "imageListData": {
+                  "type": "object",
+                  "defaultImageSource":"https://raw.githubusercontent.com/tanyagupta/tanyagupta.github.io/master/images/blank.png",
+                  "objectId": "imageListDataId",
+                  "headerTitle": "New York Times Flash Briefing",
+                  "headerSubtitle": "By Learn in 60 seconds",
+                  "headerAttributionImage": "https://developer.nytimes.com/files/poweredby_nytimes_30b.png?v=1583354208352",
+                  "backgroundImageSource": "https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
+                  "properties": {
+                    "listItemsToShow": result
+                  },
+                  "transformers": [
+                    {
+                      "inputPath": "listItemsToShow[*].headline",
+                      "outputName": "speech",
+                      "transformer": "textToSpeech"
+                    }
+                  ]
+                }
               },
             })
             .getResponse();
@@ -317,3 +308,14 @@ exports.handler = Alexa.SkillBuilders.custom()
       });
 
 }
+
+/*
+[{author=By Jazmine Ulloa, cat1=Politics, cat2=U.S., img_wid=600.0, img_len=400.0,
+article_url=https://www.nytimes.com/2022/11/11/us/politics/arizona-senator-mark-kelly-blake-masters.html,
+headline=Mark Kelly Wins Arizona Senate Race, Putting Democrats a Seat From Control Mr. Kelly, who ran as a bipartisan legislator devoted to the needs of Arizona,
+defeated Blake Masters, a Republican newcomer whose ideological fervor failed to win over enough independent voters.,
+img_url=images/2022/11/08/multimedia/08election-day-kelly-masters-hfo-1-ce3c/08election-day-kelly-masters-hfo-1-ce3c-articleLarge.jpg},
+{cat2=U.S., img_len=400.0, cat1=Politics, img_wid=600.0, article_url=https://www.nytimes.com/2022/11/11/us/politics/nevada-governor-sisolak-lombardo.html,
+headline=Lombardo Ousts Sisolak in Nevada Governor’s Race Joseph Lombardo, the Clark County sheriff, ran as a law-and-order Republican who would focus on reducing regulations.,
+img_url=images/2022/10/31/multimedia/Joe-Lombardo-wins-1-95c6/Joe-Lombardo-wins-1-95c6-articleLarge.jpg, author=By Jennifer Medina}]
+*/
