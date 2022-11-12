@@ -65,7 +65,7 @@ const GetNewsIntentHandler = {
         }
         NEWSINDEX=STEP+1
 
-
+        const dummy_news=["First news","second news","third news","fourth news"]
         var response_clean = response_string.replace(/\&/ig, 'and')
         sessionAttributes.lastSpeech = response_clean;
         var display_text = (ALL_NEWS_SET[0][0]).replace(/\&/ig, 'and')

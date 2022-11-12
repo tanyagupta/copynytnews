@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "flash news new york times",
+      "invocationName": "semantic web",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",

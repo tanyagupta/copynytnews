@@ -127,39 +127,8 @@
         "items": [
             {
                 "when": "${viewport.shape == 'round'}",
-                "type": "Container",
-                "direction": "column",
-                "items": [
-                    {
-                        "type": "Image",
-                        "source": "${payload.response.url}",
-                        "position": "bottom-right",
-                        "width": "${payload.response.width}",
-                        "height": "${payload.response.height}",
-                        "scale": "best-fill"
-                    },
-                    {
-                        "type": "AlexaHeader",
-                        "headerTitle": "${payload.response.title}",
-                        "headerAttributionImage": "${payload.response.logo}"
-                    },
-                    {
-                        "type": "Container",
-                        "grow": 1,
-                        "paddingLeft": "@marginLeft",
-                        "paddingRight": "@marginRight",
-                        "paddingBottom": "@marginBottom",
-                        "items": [
-                            {
-                                "type": "Text",
-                                "text": "${payload.response.text}",
-                                "fontSize": "20",
-                                "spacing": "10",
-                                "style": "textStyleBody"
-                            }
-                        ]
-                    }
-                ]
+                "type": "AlexaPaginatedList",
+                "headerTitle": "{$payload.response.title}"
             },
             {
                 "type": "Container",
