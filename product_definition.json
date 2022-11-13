@@ -1,0 +1,65 @@
+{
+  "vendorId": "MHZGJ21I3EJF5",
+  "inSkillProductDefinition": {
+    "version": "1",
+    "type": "SUBSCRIPTION",
+    "referenceName": "string",
+    "purchasableState": "PURCHASABLE",
+    "subscriptionInformation": {
+      "subscriptionPaymentFrequency": "MONTHLY",
+      "subscriptionTrialPeriodDays": 7
+    },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "NEWS",
+      "distributionCountries": []
+    },
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "name": "Unofficial Copy of New York Times Flash Briefing",
+          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
+          "largeIconUri": "file://assets/images/en-US_largeIconUri.png",
+
+          "summary": "string",
+          "description":   "Updated daily, this skill gives you New York Times news. Say \"Alexa open flash briefing\" to get started. Data provided by The New York Times.",
+          "isAvailableWorldwide": true,
+          "examplePhrases": [
+            "news",
+            "New York Times",
+            "New York Times News"
+          ],
+          "keywords": [
+            "news",
+            "New York Times",
+            "New York Times News"
+          ],
+          "customProductPrompts": {
+            "purchasePromptDescription": "{PREMIUM_CONTENT_TITLE} includes <emphasis level=\"moderate\"> access to all the news for the day<break time=\"150ms\">",
+            "boughtConfirmationPrompt": "Enjoy your new {PREMIUM_CONTENT_TITLE}! To play anytime say Alexa, ask Ultimate news for my packs."
+          }
+        }
+      },
+      "distributionCountries": [],
+      "pricing": {
+        "amazon.com": {
+          "releaseDate": "",
+          "defaultPriceListing": {
+            "price": ".99",
+            "currency": "USD"
+          }
+        }
+      },
+      "taxInformation": {
+        "category": "SOFTWARE"
+      }
+    },
+    "privacyAndCompliance": {
+      "locales": {
+        "en-US": {
+          "privacyPolicyUrl": "https://learnin60seconds.com/tos"
+        }
+      }
+    },
+    "testingInstructions": "Sample Testing Instructions."
+  }

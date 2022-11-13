@@ -16,6 +16,8 @@ var MAX
 const STEP = 5
 var NEWSINDEX
 const LAST_NEWS = "You have now finished hearing about all the news for today";
+const FALLBACK_MESSAGE = "I an sorry I cannot help you with that. You can say launch flash news briefing"
+const FALLBACK_REPROMPT = HELP_REPROMPT
 
 
 const GetNewsIntentHandler = {
@@ -271,6 +273,32 @@ const ErrorHandler = {
     }
 };
 
+const FallbackIntentHandler = {
+
+  // 2018-May-01: AMAZON.FallackIntent is only currently available in en-US locale.
+
+  //              This handler will not be triggered except in that locale, so it can be
+
+  //              safely deployed for any locale.
+
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'IntentRequest'
+      && request.intent.name === 'AMAZON.FallbackIntent';
+  },
+
+  handle(handlerInput) {
+
+    return handlerInput.responseBuilder
+
+      .speak(FALLBACK_MESSAGE)
+      .reprompt(FALLBACK_REPROMPT)
+      .getResponse();
+
+  }
+
+};
+
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
 // defined are included below. The order matters - they're processed top to bottom.
@@ -283,6 +311,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         RepeatIntentHandler,
+        FallbackIntentHandler,
         ExitIntentHandler,
         SessionEndedRequestHandler,
         IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers

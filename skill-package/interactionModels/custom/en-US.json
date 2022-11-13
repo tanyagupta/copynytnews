@@ -40,6 +40,10 @@
         {
           "name": "AMAZON.RepeatIntent",
           "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
         }
       ],
       "types": []
