@@ -59,9 +59,6 @@ const GetNewsIntentHandler = {
 
 
         return handlerInput.responseBuilder
-            //.speak(speakOutput)
-            //.withSimpleCard(SKILL_NAME,"HELLO")
-//            .withStandardCard(SKILL_NAME,display_text,display_image)
             .withShouldEndSession(false)
             .reprompt('Would you like some more news?')
             .addDirective({
