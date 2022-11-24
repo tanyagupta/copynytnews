@@ -77,13 +77,6 @@ const GetNewsIntentHandler = {
                   "properties": {
                     "listItemsToShow": result
                   },
-                  "primaryAction": {
-                    "type": "SendEvent",
-                    "arguments": [
-                      "ListItemSelected",
-                      "${ordinal}"
-                    ]
-                  },
                   "transformers": [
                     {
                       "inputPath": "listItemsToShow[*].headline",
