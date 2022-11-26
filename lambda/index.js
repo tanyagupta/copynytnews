@@ -84,7 +84,7 @@ const GetNewsIntentHandler = {
                       "transformer": "textToSpeech"
                     }
                   ]
-                }
+                },
               },
             })
             .getResponse();
@@ -296,6 +296,25 @@ const FallbackIntentHandler = {
 
 };
 
+const sendEventHandler = {
+      canHandle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      return request.type === 'Alexa.Presentation.APL.UserEvent' && request.arguments.length > 0;
+      },
+      handle(handlerInput) {
+
+      //retrieving the argument of the SendEvent command. "PRESSED" in this case
+      const sendEventArgument = (handlerInput.requestEnvelope.request.arguments[0]);
+
+      let speechText = sendEventArgument;
+
+      //make your API call here
+
+          return handlerInput.responseBuilder
+              .speak(speechText)
+          }
+}
+
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
 // defined are included below. The order matters - they're processed top to bottom.
@@ -311,6 +330,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         FallbackIntentHandler,
         ExitIntentHandler,
         SessionEndedRequestHandler,
+        sendEventHandler,
         IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
         )
     .addErrorHandlers(

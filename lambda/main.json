@@ -24,7 +24,20 @@
       "headerBackButton": false,
       "headerTitle": "${imageListData.headerTitle}",
       "backgroundImageSource": "${imageListData.backgroundImageSource}"
+    },
+    {
+    "type": "TouchWrapper",
+    "item": {
+        "type": "Text",
+        "text": "PRESS ME"
+    },
+    "onPress": {
+        "type": "SendEvent",
+        "arguments": [
+            "PRESSED"
+        ]
     }
+}
   ]
   },
   "onMount": [
