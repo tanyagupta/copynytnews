@@ -14,7 +14,7 @@ var ALL_NEWS_SET;
 var INTROS=["Leading the news today is the headline ","In other news we also have a story ", "Third on the list is the following headline ","The New York Times reports as follows: ","Our last headline of the day is as follows: "]
 var MAX
 const STEP = 5
-var NEWSINDEX
+var NEWSINDEX=0
 const LAST_NEWS = "You have now finished hearing about all the news for today";
 const FALLBACK_MESSAGE = "I an sorry I cannot help you with that. You can say launch flash news briefing"
 const FALLBACK_REPROMPT = HELP_REPROMPT
@@ -57,37 +57,56 @@ const GetNewsIntentHandler = {
 
         }
 
+        var news_set=""
+        for (var i=0;i<STEP;i++){
+          news_set=news_set+result[i]["headline"]+"<break time='2s'/>"+" ";
 
-        return handlerInput.responseBuilder
-            .withShouldEndSession(false)
-            .reprompt('Would you like some more news?')
-            .addDirective({
-              type: 'Alexa.Presentation.APL.RenderDocument',
-              version: '1.0',
-              document: mydocument,
-              datasources: {
-                "imageListData": {
-                  "type": "object",
-                  "defaultImageSource":"https://raw.githubusercontent.com/tanyagupta/tanyagupta.github.io/master/images/blank.png",
-                  "objectId": "imageListDataId",
-                  "headerTitle": "New York Times Flash Briefing",
-                  "headerSubtitle": "By Learn in 60 seconds",
-                  "headerAttributionImage": "https://developer.nytimes.com/files/poweredby_nytimes_30b.png?v=1583354208352",
-                  "backgroundImageSource": "https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
-                  "properties": {
-                    "listItemsToShow": result
+        }
+        NEWSINDEX=STEP+1
+
+
+        if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']){
+          console.log("this device supports APL")
+          return handlerInput.responseBuilder
+              .withShouldEndSession(false)
+              .reprompt('Would you like some more news?')
+              .addDirective({
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                version: '1.0',
+                document: mydocument,
+                datasources: {
+                  "imageListData": {
+                    "type": "object",
+                    "defaultImageSource":"https://raw.githubusercontent.com/tanyagupta/tanyagupta.github.io/master/images/blank.png",
+                    "objectId": "imageListDataId",
+                    "headerTitle": "New York Times Flash Briefing",
+                    "headerSubtitle": "By Learn in 60 seconds",
+                    "headerAttributionImage": "https://developer.nytimes.com/files/poweredby_nytimes_30b.png?v=1583354208352",
+                    "backgroundImageSource": "https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
+                    "properties": {
+                      "listItemsToShow": result
+                    },
+                    "transformers": [
+                      {
+                        "inputPath": "listItemsToShow[*].headline",
+                        "outputName": "speech",
+                        "transformer": "textToSpeech"
+                      }
+                    ]
                   },
-                  "transformers": [
-                    {
-                      "inputPath": "listItemsToShow[*].headline",
-                      "outputName": "speech",
-                      "transformer": "textToSpeech"
-                    }
-                  ]
                 },
-              },
-            })
-            .getResponse();
+              })
+              .getResponse()
+            }
+            else {
+
+
+              return handlerInput.responseBuilder
+                .speak(news_set)
+                .withShouldEndSession(false)
+                .reprompt('Would you like some more news?')
+                .getResponse()
+            }
     }
 };
 const YesIntentHandler = {
