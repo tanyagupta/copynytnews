@@ -100,6 +100,8 @@ const GetNewsIntentHandler = {
             }
             else {
 
+              console.log("no support for APL")
+
 
               return handlerInput.responseBuilder
                 .speak(news_set)
@@ -182,6 +184,8 @@ const NoIntentHandler = {
 const ExitIntentHandler = {
   canHandle(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
+    console.log("ExitIntentHandler2")
+    console.log(handlerInput)
     return request.type === 'IntentRequest'
       && (request.intent.name === 'AMAZON.CancelIntent'
         || request.intent.name === 'AMAZON.StopIntent');
@@ -235,6 +239,8 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
+        console.log("CancelAndStopIntentHandler")
+        console.log(handlerInput.requestEnvelope.request.reason)
         const speakOutput = 'Goodbye!';
         return handlerInput.responseBuilder
         .speak(STOP_MESSAGE)
