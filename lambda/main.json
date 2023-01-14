@@ -23,22 +23,16 @@
        "providerText": "Courtesy of New York Times API",
       "headerBackButton": false,
       "headerTitle": "${imageListData.headerTitle}",
-      "backgroundImageSource": "${imageListData.backgroundImageSource}"
-    },
-    {
-    "type": "TouchWrapper",
-    "item": {
-        "type": "Text",
-        "text": "PRESS ME"
-    },
-    "onPress": {
+      "backgroundImageSource": "${imageListData.backgroundImageSource}",
+      "primaryAction": {
         "type": "SendEvent",
+        "id": "myImageListWithItemsToSpeak",
         "arguments": [
-            "PRESSED"
+          "ListItemSelected",
+          "${ordinal}"
         ]
-    }
-}
-  ]
+      }
+    }]
   },
   "onMount": [
     {

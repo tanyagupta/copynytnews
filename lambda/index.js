@@ -19,6 +19,27 @@ const LAST_NEWS = "You have now finished hearing about all the news for today";
 const FALLBACK_MESSAGE = "I an sorry I cannot help you with that. You can say launch flash news briefing"
 const FALLBACK_REPROMPT = HELP_REPROMPT
 
+const TouchListHandler = {
+    canHandle(handlerInput){
+        // Since an APL skill might have multiple buttons that generate UserEvents,
+        // use the event source ID to determine the button press that triggered
+        // this event and use the correct handler. In this example, the string
+        // 'fadeHelloTextButton' is the ID we set on the AlexaButton in the document.
+        console.log("I am in touchlist handler")
+        console.log(handlerInput.requestEnvelope)
+        console.log(handlerInput.requestEnvelope.request.type)
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.APL.UserEvent'
+            && handlerInput.requestEnvelope.request.source.id === 'myImageListWithItemsToSpeak';
+    },
+    handle(handlerInput){
+        console.log("I am now inside hander for touch");
+        const speakOutput = "I have stopped reading the news.";
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt("Tell me to start over")
+            .getResponse();
+    }
+}
 
 const GetNewsIntentHandler = {
     canHandle(handlerInput) {
@@ -52,6 +73,8 @@ const GetNewsIntentHandler = {
          temp["author"]=res[i][7] || ""
          temp["cat1"]=res[i][8] || ""
          temp["cat2"]=res[i][9] || ""
+         temp["num"]=i
+         temp["id"]="myImageListWithItemsToSpeak"
 
          result.push(temp)
 
@@ -346,6 +369,7 @@ const sendEventHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
       //  LaunchRequestHandler,
+        TouchListHandler,
         GetNewsIntentHandler,
         YesIntentHandler,
         NoIntentHandler,

@@ -20,6 +20,10 @@
           "samples": ["stop","exit","off","shut up"]
         },
         {
+          "name": "AMAZON.PauseIntent",
+          "samples": ["pause"]
+        },
+        {
           "name": "GetNewsIntent",
           "slots": [],
           "samples": [
@@ -39,8 +43,12 @@
           "samples": []
         },
         {
+          "name": "AMAZON.ResumeIntent",
+          "samples": ["resume","continue","keep going"]
+        },
+        {
           "name": "AMAZON.RepeatIntent",
-          "samples": []
+          "samples": ["repeat","say that again","repeat that"]
         },
         {
           "name": "AMAZON.FallbackIntent",
