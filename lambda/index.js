@@ -25,15 +25,19 @@ const TouchListHandler = {
         // use the event source ID to determine the button press that triggered
         // this event and use the correct handler. In this example, the string
         // 'fadeHelloTextButton' is the ID we set on the AlexaButton in the document.
-        console.log("I am in touchlist handler")
-        console.log(handlerInput.requestEnvelope)
-        console.log(handlerInput.requestEnvelope.request.type)
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.APL.UserEvent'
             && handlerInput.requestEnvelope.request.source.id === 'myImageListWithItemsToSpeak';
     },
     handle(handlerInput){
         console.log("I am now inside hander for touch");
-        const speakOutput = "I have stopped reading the news.";
+        console.log(handlerInput.requestEnvelope)
+        console.log(handlerInput.requestEnvelope.request.arguments)
+        news = handlerInput.requestEnvelope.request.arguments[1]
+        console.log(news)
+        news_item = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
+        console.log(news_item)
+
+        const speakOutput = "You clicked on the following news: "+news_item;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt("Tell me to start over")
@@ -79,7 +83,7 @@ const GetNewsIntentHandler = {
          result.push(temp)
 
         }
-
+        ALL_NEWS_SET=result
         var news_set=""
         for (var i=0;i<STEP;i++){
           news_set=news_set+result[i]["headline"]+"<break time='2s'/>"+" ";
@@ -89,7 +93,8 @@ const GetNewsIntentHandler = {
 
 
         if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']){
-          console.log("this device supports APL")
+          //console.log("this device supports APL")
+
           return handlerInput.responseBuilder
               .withShouldEndSession(false)
               .reprompt('Would you like some more news?')
@@ -222,16 +227,19 @@ const ExitIntentHandler = {
 };
 const RepeatIntentHandler = {
   canHandle(handlerInput) {
+
     const request = handlerInput.requestEnvelope.request;
     return request.type === 'IntentRequest'
       && request.intent.name === 'AMAZON.RepeatIntent';
   },
   handle(handlerInput) {
 
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    //const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    console.log("I am inside repeat handler now")
+    //console.log(sessionAttributes)
 
-    const REPEAT = sessionAttributes.lastSpeech
-
+    const REPEAT = "hello"
+    console.log(REPEAT)
 
     return handlerInput.responseBuilder
       .speak(REPEAT+" Would you like more news?")
