@@ -81,6 +81,7 @@ const GetNewsIntentHandler = {
          temp["id"]="myImageListWithItemsToSpeak"
 
          result.push(temp)
+      
 
         }
         ALL_NEWS_SET=result
@@ -211,9 +212,9 @@ const NoIntentHandler = {
 
 const ExitIntentHandler = {
   canHandle(handlerInput) {
-    const request = handlerInput.requestEnvelope.request;
-    console.log("ExitIntentHandler2")
-    console.log(handlerInput)
+    const request = handlerInput.requestEnvelope.request.type;
+    console.log("ExitIntentHandler")
+    console.log(request)
     return request.type === 'IntentRequest'
       && (request.intent.name === 'AMAZON.CancelIntent'
         || request.intent.name === 'AMAZON.StopIntent');
@@ -238,8 +239,9 @@ const RepeatIntentHandler = {
     console.log("I am inside repeat handler now")
     //console.log(sessionAttributes)
 
-    const REPEAT = "hello"
+    const REPEAT = handlerInput.attributesManager.getSessionAttributes();
     console.log(REPEAT)
+
 
     return handlerInput.responseBuilder
       .speak(REPEAT+" Would you like more news?")
@@ -271,7 +273,7 @@ const CancelAndStopIntentHandler = {
     },
     handle(handlerInput) {
         console.log("CancelAndStopIntentHandler")
-        console.log(handlerInput.requestEnvelope.request.reason)
+        console.log(handlerInput.requestEnvelope.request.intent.name)
         const speakOutput = 'Goodbye!';
         return handlerInput.responseBuilder
         .speak(STOP_MESSAGE)
@@ -285,10 +287,31 @@ const SessionEndedRequestHandler = {
     },
     handle(handlerInput) {
         // Any cleanup logic goes here.
+        const reason = handlerInput.requestEnvelope.request.reason;
+        console.log("==== SESSION ENDED WITH REASON ======");
+        console.log(reason);
         return handlerInput.responseBuilder.getResponse();
     }
 };
 
+
+/*
+
+{
+  type: 'IntentRequest',
+  requestId: 'amzn1.echo-api.request.65893f50-161d-4a9d-8321-b0aa263f7d85',
+  locale: 'en-US',
+  timestamp: '2023-01-22T18:10:01Z',
+  intent: { name: 'AMAZON.CancelIntent', confirmationStatus: 'NONE' }
+}
+
+2023-01-22T18:10:01.203Z 3d13e8a9-fd04-4dfb-96d8-f553af3d9b0d INFO { type: 'IntentRequest', requestId: 'amzn1.echo-api.request.65893f50-161d-4a9d-8321-b0aa263f7d85', locale: 'en-US', timestamp: '2023-01-22T18:10:01Z', intent: { name: 'AMAZON.CancelIntent', confirmationStatus: 'NONE' } }
+
+
+OR
+
+AMAZON.StopIntent
+*/
 // The intent reflector is used for interaction model testing and debugging.
 // It will simply repeat the intent the user said. You can create custom handlers
 // for your intents by defining them above, then also adding them to the request
