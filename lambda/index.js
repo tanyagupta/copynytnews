@@ -81,7 +81,7 @@ const GetNewsIntentHandler = {
          temp["id"]="myImageListWithItemsToSpeak"
 
          result.push(temp)
-      
+
 
         }
         ALL_NEWS_SET=result
@@ -95,37 +95,50 @@ const GetNewsIntentHandler = {
 
         if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']){
           //console.log("this device supports APL")
+          const news_data_set = {
+            "imageListData": {
+              "type": "object",
+              "defaultImageSource":"https://raw.githubusercontent.com/tanyagupta/tanyagupta.github.io/master/images/blank.png",
+              "objectId": "imageListDataId",
+              "headerTitle": "New York Times Flash Briefing",
+              "headerSubtitle": "By Learn in 60 seconds",
+              "headerAttributionImage": "https://developer.nytimes.com/files/poweredby_nytimes_30b.png?v=1583354208352",
+              "backgroundImageSource": "https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
+              "properties": {
+                "listItemsToShow": result
+              },
+              "transformers": [
+                {
+                  "inputPath": "listItemsToShow[*].headline",
+                  "outputName": "speech",
+                  "transformer": "textToSpeech"
+                }
+              ]
 
-          return handlerInput.responseBuilder
+            },
+          }
+
+          const news_speech_directive = {
+            type: 'Alexa.Presentation.APL.RenderDocument',
+            version: '1.0',
+            document: mydocument,
+            datasources: news_data_set
+          }
+
+          const news_response =  handlerInput.responseBuilder
               .withShouldEndSession(false)
               .reprompt('Would you like some more news?')
-              .addDirective({
-                type: 'Alexa.Presentation.APL.RenderDocument',
-                version: '1.0',
-                document: mydocument,
-                datasources: {
-                  "imageListData": {
-                    "type": "object",
-                    "defaultImageSource":"https://raw.githubusercontent.com/tanyagupta/tanyagupta.github.io/master/images/blank.png",
-                    "objectId": "imageListDataId",
-                    "headerTitle": "New York Times Flash Briefing",
-                    "headerSubtitle": "By Learn in 60 seconds",
-                    "headerAttributionImage": "https://developer.nytimes.com/files/poweredby_nytimes_30b.png?v=1583354208352",
-                    "backgroundImageSource": "https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
-                    "properties": {
-                      "listItemsToShow": result
-                    },
-                    "transformers": [
-                      {
-                        "inputPath": "listItemsToShow[*].headline",
-                        "outputName": "speech",
-                        "transformer": "textToSpeech"
-                      }
-                    ]
-                  },
-                },
-              })
-              .getResponse()
+              .addDirective(news_speech_directive)
+
+
+          temp = news_response
+          console.log("news_response.speak")
+          console.log(news_response.speak)
+          console.log(news_response.speak())
+          sessionAttributes.lastSpeech =  temp;
+
+
+          return news_response.getResponse()
             }
             else {
 
@@ -232,20 +245,22 @@ const RepeatIntentHandler = {
     const request = handlerInput.requestEnvelope.request;
     return request.type === 'IntentRequest'
       && request.intent.name === 'AMAZON.RepeatIntent';
+
   },
   handle(handlerInput) {
 
     //const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
     console.log("I am inside repeat handler now")
-    //console.log(sessionAttributes)
+//    const temp = mydocument.mainTemplate.items
+//    console.log(handlerInput.requestEnvelope)
 
     const REPEAT = handlerInput.attributesManager.getSessionAttributes();
-    console.log(REPEAT)
+    console.log(REPEAT.lastSpeech)
 
 
     return handlerInput.responseBuilder
-      .speak(REPEAT+" Would you like more news?")
-      .reprompt(REPEAT+" Would you like more news?")
+      .speak(REPEAT.lastSpeech +" Would you like more news?")
+      .reprompt(REPEAT.lastSpeech+" Would you like more news?")
       .getResponse();
   },
 };
