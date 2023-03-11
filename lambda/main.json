@@ -17,6 +17,7 @@
       "listItems": "${imageListData.properties.listItemsToShow}",
       "speechItems": "${imageListData.properties.listItemsToShow}",
       "headerAttributionImage": "${imageListData.headerAttributionImage}",
+      "newsUrl": "${imageListData.properties.listItemsToShow.article_url}",
       "imageSource": "${imageListData.properties.listItemsToShow.imageSource}",
        "primaryText": "${imageListData.properties.listItemsToShow.primaryText}",
        "secondaryText": "${imageListData.properties.listItemsToShow.secondaryText}",
@@ -24,7 +25,18 @@
       "headerBackButton": false,
       "headerTitle": "${imageListData.headerTitle}",
       "backgroundImageSource": "${imageListData.backgroundImageSource}",
-      "primaryAction": {
+      "primaryAction":[
+        {"type": "OpenURL",
+              "source":"${imageListData.headerAttributionImage}",
+              "onFail": {
+                "type": "SetValue",
+                "componentId": "errorText",
+                "property": "text",
+                "value": "Unable to open Amazon.com (${event.source.value})"
+              }
+            }
+       ],
+      "onPress": {
         "type": "SendEvent",
         "id": "myImageListWithItemsToSpeak",
         "arguments": [
