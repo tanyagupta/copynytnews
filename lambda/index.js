@@ -34,8 +34,12 @@ const TouchListHandler = {
         console.log(handlerInput.requestEnvelope.request.arguments)
         news = handlerInput.requestEnvelope.request.arguments[1]
         console.log(news)
+
         news_item = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
         console.log(news_item)
+
+        news_url = (ALL_NEWS_SET[Number(news)-1])["article_url"]
+        console.log("xyred "+news_url)
 
         const speakOutput = "You clicked on the following news: "+news_item;
         return handlerInput.responseBuilder
@@ -131,11 +135,13 @@ const GetNewsIntentHandler = {
               .addDirective(news_speech_directive)
 
 
-          temp = news_response
-          console.log("news_response.speak")
-          console.log(news_response.speak)
-          console.log(news_response.speak())
-          sessionAttributes.lastSpeech =  temp;
+          // temp = news_response
+          // console.log("news_response.speak")
+          // console.log(news_response.speak)
+          // console.log(news_response.speak())
+          // sessionAttributes.lastSpeech =  temp;
+
+          console.log(result[0])
 
 
           return news_response.getResponse()
