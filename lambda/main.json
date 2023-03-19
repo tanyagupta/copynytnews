@@ -27,7 +27,7 @@
       "backgroundImageSource": "${imageListData.backgroundImageSource}",
       "primaryAction":[
         {"type": "OpenURL",
-              "source":"${imageListData.headerAttributionImage}",
+              "source":"${imageListData.properties.listItemsToShow[0].article_url}",
               "onFail": {
                 "type": "SetValue",
                 "componentId": "errorText",
