@@ -1,0 +1,20 @@
+{
+  "type": "APL",
+  "version": "2023.1",
+  "description": "NYT skill",
+  "theme": "dark",
+  "mainTemplate": {
+    "parameters": [
+      "payload"
+    ],
+    "items": [
+      {
+        "type": "Text",
+        "height": "100%",
+        "textAlign": "center",
+        "textAlignVertical": "center",
+        "text": "Goodbye! Thanks for listening to New York Times flash briefing by Learn in 60 seconds"
+      }
+    ]
+  }
+}

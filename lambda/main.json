@@ -25,18 +25,7 @@
       "headerBackButton": false,
       "headerTitle": "${imageListData.headerTitle}",
       "backgroundImageSource": "${imageListData.backgroundImageSource}",
-      "primaryAction":[
-        {"type": "OpenURL",
-              "source":"${imageListData.properties.listItemsToShow[0].article_url}",
-              "onFail": {
-                "type": "SetValue",
-                "componentId": "errorText",
-                "property": "text",
-                "value": "Unable to open Amazon.com (${event.source.value})"
-              }
-            }
-       ],
-      "onPress": {
+      "primaryAction": {
         "type": "SendEvent",
         "id": "myImageListWithItemsToSpeak",
         "arguments": [

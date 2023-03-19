@@ -4,6 +4,7 @@
 const Alexa = require('ask-sdk-core');
 var requestlib = require('request');
 const mydocument = require('main.json')
+const dummy_document = require('dummy.json')
 
 
 const SKILL_NAME ="New York Times News"
@@ -29,23 +30,34 @@ const TouchListHandler = {
             && handlerInput.requestEnvelope.request.source.id === 'myImageListWithItemsToSpeak';
     },
     handle(handlerInput){
-        console.log("I am now inside hander for touch");
-        console.log(handlerInput.requestEnvelope)
-        console.log(handlerInput.requestEnvelope.request.arguments)
-        news = handlerInput.requestEnvelope.request.arguments[1]
-        console.log(news)
 
-        news_item = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
-        console.log(news_item)
+      news = handlerInput.requestEnvelope.request.arguments[1]
+      news_item = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
+      news_url = (ALL_NEWS_SET[Number(news)-1])["article_url"]
+      if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']) {
+            handlerInput.responseBuilder.addDirective({
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                document: dummy_document,
+                token: 'jip'
+            });
 
-        news_url = (ALL_NEWS_SET[Number(news)-1])["article_url"]
-        console.log("xyred "+news_url)
+            var urlToGo="https://www.nytimes.com/2023/03/19/world/europe/putin-mariupol-crimea-ukraine.html";
 
-        const speakOutput = "You clicked on the following news: "+news_item;
+            handlerInput.responseBuilder.addDirective({
+                type: "Alexa.Presentation.APL.ExecuteCommands",
+                token: 'jip',
+                commands: [{
+                  type: "OpenURL",
+                  source: news_url
+                }]
+            });
+        }
+
+
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt("Tell me to start over")
-            .getResponse();
+        .speak("You have clicked on "+news_item+". "+STOP_MESSAGE)
+        .withShouldEndSession(true)
+        .getResponse();
     }
 }
 
