@@ -1,6 +1,3 @@
-// This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
-// Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
-// session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
 var requestlib = require('request');
 const mydocument = require('main.json')
@@ -12,7 +9,7 @@ const STOP_MESSAGE = 'Goodbye! Thanks for listening to New York Times flash brie
 const HELP_MESSAGE = 'You can say launch flash news briefing, or, you can say stop... What can I help you with?';
 const HELP_REPROMPT = 'What can I help you with?';
 var ALL_NEWS_SET;
-var INTROS=["Leading the news today is the headline ","In other news we also have a story ", "Third on the list is the following headline ","The New York Times reports as follows: ","Our last headline of the day is as follows: "]
+//var INTROS=["Leading the news today is the headline ","In other news we also have a story ", "Third on the list is the following headline ","The New York Times reports as follows: ","Our last headline of the day is as follows: "]
 var MAX
 const STEP = 5
 var NEWSINDEX=0
@@ -22,10 +19,6 @@ const FALLBACK_REPROMPT = HELP_REPROMPT
 
 const TouchListHandler = {
     canHandle(handlerInput){
-        // Since an APL skill might have multiple buttons that generate UserEvents,
-        // use the event source ID to determine the button press that triggered
-        // this event and use the correct handler. In this example, the string
-        // 'fadeHelloTextButton' is the ID we set on the AlexaButton in the document.
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.APL.UserEvent'
             && handlerInput.requestEnvelope.request.source.id === 'myImageListWithItemsToSpeak';
     },
@@ -101,12 +94,16 @@ const GetNewsIntentHandler = {
 
         }
         ALL_NEWS_SET=result
+        MAX=ALL_NEWS_SET.length-1
         var news_set=""
         for (var i=0;i<STEP;i++){
           news_set=news_set+result[i]["headline"]+"<break time='2s'/>"+" ";
+          if(i===STEP-1){
+            sessionAttributes.lastSpeech = result[i]["headline"];
+          }
 
         }
-        NEWSINDEX=STEP+1
+        NEWSINDEX=STEP
 
 
         if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']){
@@ -146,13 +143,6 @@ const GetNewsIntentHandler = {
               .reprompt('Would you like some more news?')
               .addDirective(news_speech_directive)
 
-
-          // temp = news_response
-          // console.log("news_response.speak")
-          // console.log(news_response.speak)
-          // console.log(news_response.speak())
-          // sessionAttributes.lastSpeech =  temp;
-
           console.log(result[0])
 
 
@@ -178,52 +168,44 @@ const YesIntentHandler = {
     },
     handle(handlerInput) {
       const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+      console.log(sessionAttributes)
+      console.log(NEWSINDEX)
+      console.log(MAX)
+      console.log(STEP)
       var response_string = ""
       var j=0
-      if (NEWSINDEX+STEP<=MAX){
-        for(var i = NEWSINDEX; i<NEWSINDEX+STEP;i++){
 
-          response_string=response_string
-          +INTROS[j]
-          +" "+ALL_NEWS_SET[i][0]
-          +"<break time='1s'/>"
-          +" "+ALL_NEWS_SET[i][2]
-          //+"<break time='1s'/>"
-          //+"Here's the lead Para:"
-          //+" "+ALL_NEWS_SET[i][1]
-          +"<break time='2s'/>"+" "
-          j++
+
+
+      var news_set=""
+
+      if (NEWSINDEX+STEP<=MAX){
+        for (var i=NEWSINDEX;i<NEWSINDEX+STEP;i++){
+          news_set=news_set+ALL_NEWS_SET[i]["headline"]+"<break time='2s'/>"+" ";
+          if(i===NEWSINDEX+STEP-1){
+            sessionAttributes.lastSpeech = ALL_NEWS_SET[i]["headline"];
+          }
 
         }
-        var response_clean = response_string.replace(/\&/ig, 'and')
-        sessionAttributes.lastSpeech = response_clean;
-        var display_text = (ALL_NEWS_SET[NEWSINDEX][0]).replace(/\&/ig, 'and')
-        var display_image = ALL_NEWS_SET[NEWSINDEX][4] ? "https://static01.nyt.com/"+ALL_NEWS_SET[NEWSINDEX][4] : "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/social-media-1989152_640.jpg";
+        NEWSINDEX=NEWSINDEX+STEP
 
-        NEWSINDEX=NEWSINDEX+STEP;
+          var response_clean = news_set.replace(/\&/ig, 'and')
+          const speakOutput = response_clean+" "+"Would you like more news?";
 
-        const speakOutput = response_clean+" "+"Would you like more news?";
-        //const speakOutput = 'Yes yes yes';
-
+            return handlerInput.responseBuilder
+              .speak(speakOutput)
+              .withShouldEndSession(false)
+              .reprompt('Would you like some more news?')
+              .getResponse();
+        }
+        else{
           return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.withSimpleCard(SKILL_NAME,"HELLO")
-            .withStandardCard(SKILL_NAME,display_text,display_image)
-            .withShouldEndSession(false)
-            .reprompt('Would you like some more news?')
-            .getResponse();
-      }
-      else{
-                    return handlerInput.responseBuilder
                       .speak(LAST_NEWS)
                       .withShouldEndSession(true)
-                      .withSimpleCard(SKILL_NAME,LAST_NEWS)
-                      .getResponse();
-                  }
+        }
+      }
 
 
-
-    }
 };
 const NoIntentHandler = {
     canHandle(handlerInput) {
@@ -231,7 +213,7 @@ const NoIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'No no no';
+
 
         return handlerInput.responseBuilder
             .speak(STOP_MESSAGE)
@@ -257,31 +239,7 @@ const ExitIntentHandler = {
       .getResponse();
   },
 };
-const RepeatIntentHandler = {
-  canHandle(handlerInput) {
 
-    const request = handlerInput.requestEnvelope.request;
-    return request.type === 'IntentRequest'
-      && request.intent.name === 'AMAZON.RepeatIntent';
-
-  },
-  handle(handlerInput) {
-
-    //const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    console.log("I am inside repeat handler now")
-//    const temp = mydocument.mainTemplate.items
-//    console.log(handlerInput.requestEnvelope)
-
-    const REPEAT = handlerInput.attributesManager.getSessionAttributes();
-    console.log(REPEAT.lastSpeech)
-
-
-    return handlerInput.responseBuilder
-      .speak(REPEAT.lastSpeech +" Would you like more news?")
-      .reprompt(REPEAT.lastSpeech+" Would you like more news?")
-      .getResponse();
-  },
-};
 
 
 const HelpIntentHandler = {
@@ -330,16 +288,7 @@ const SessionEndedRequestHandler = {
 
 /*
 
-{
-  type: 'IntentRequest',
-  requestId: 'amzn1.echo-api.request.65893f50-161d-4a9d-8321-b0aa263f7d85',
-  locale: 'en-US',
-  timestamp: '2023-01-22T18:10:01Z',
-  intent: { name: 'AMAZON.CancelIntent', confirmationStatus: 'NONE' }
-}
-
-2023-01-22T18:10:01.203Z 3d13e8a9-fd04-4dfb-96d8-f553af3d9b0d INFO { type: 'IntentRequest', requestId: 'amzn1.echo-api.request.65893f50-161d-4a9d-8321-b0aa263f7d85', locale: 'en-US', timestamp: '2023-01-22T18:10:01Z', intent: { name: 'AMAZON.CancelIntent', confirmationStatus: 'NONE' } }
-
+CANCEL
 
 OR
 
@@ -384,12 +333,6 @@ const ErrorHandler = {
 
 const FallbackIntentHandler = {
 
-  // 2018-May-01: AMAZON.FallackIntent is only currently available in en-US locale.
-
-  //              This handler will not be triggered except in that locale, so it can be
-
-  //              safely deployed for any locale.
-
   canHandle(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
     return request.type === 'IntentRequest'
@@ -433,13 +376,13 @@ const sendEventHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
       //  LaunchRequestHandler,
-        TouchListHandler,
+
         GetNewsIntentHandler,
-        YesIntentHandler,
-        NoIntentHandler,
+        TouchListHandler,
+       YesIntentHandler,
+       NoIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
-        RepeatIntentHandler,
         FallbackIntentHandler,
         ExitIntentHandler,
         SessionEndedRequestHandler,
@@ -453,8 +396,6 @@ exports.handler = Alexa.SkillBuilders.custom()
 
     function getNews() {
       return new Promise(function (resolve, reject) {
-        //var url = 'https://script.google.com/macros/s/AKfycbxDldtSHoZoYMBct9BrmYohyFO10JdOeAaMoO3F0e9HSrOZQTEJ/exec'
-        //var url = 'https://script.google.com/macros/s/AKfycbzdDlPW9-iZodsf45dEOTN2tlXqszE5atPDfuiIJCzdttjl_0f7/exec'
         var url = "https://script.google.com/macros/s/AKfycbzdDlPW9-iZodsf45dEOTN2tlXqszE5atPDfuiIJCzdttjl_0f7/exec"
           requestlib(url, function (error, res, body) {
 
@@ -468,14 +409,3 @@ exports.handler = Alexa.SkillBuilders.custom()
       });
 
 }
-
-/*
-[{author=By Jazmine Ulloa, cat1=Politics, cat2=U.S., img_wid=600.0, img_len=400.0,
-article_url=https://www.nytimes.com/2022/11/11/us/politics/arizona-senator-mark-kelly-blake-masters.html,
-headline=Mark Kelly Wins Arizona Senate Race, Putting Democrats a Seat From Control Mr. Kelly, who ran as a bipartisan legislator devoted to the needs of Arizona,
-defeated Blake Masters, a Republican newcomer whose ideological fervor failed to win over enough independent voters.,
-img_url=images/2022/11/08/multimedia/08election-day-kelly-masters-hfo-1-ce3c/08election-day-kelly-masters-hfo-1-ce3c-articleLarge.jpg},
-{cat2=U.S., img_len=400.0, cat1=Politics, img_wid=600.0, article_url=https://www.nytimes.com/2022/11/11/us/politics/nevada-governor-sisolak-lombardo.html,
-headline=Lombardo Ousts Sisolak in Nevada Governor’s Race Joseph Lombardo, the Clark County sheriff, ran as a law-and-order Republican who would focus on reducing regulations.,
-img_url=images/2022/10/31/multimedia/Joe-Lombardo-wins-1-95c6/Joe-Lombardo-wins-1-95c6-articleLarge.jpg, author=By Jennifer Medina}]
-*/
