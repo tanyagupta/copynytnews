@@ -55,7 +55,7 @@ const TouchListHandler = {
 
 
         return handlerInput.responseBuilder
-        .speak("You have clicked on "+news_item+". "+STOP_MESSAGE)
+        .speak("You have clicked on a news article. We will now open the link. Enjoy your reading.")
         .withShouldEndSession(true)
         .getResponse();
     }
