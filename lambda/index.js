@@ -32,7 +32,7 @@ const TouchListHandler = {
     handle(handlerInput){
 
       news = handlerInput.requestEnvelope.request.arguments[1]
-      news_item = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
+      header_title = (ALL_NEWS_SET[Number(news)-1])["headerTitle"]
       news_url = (ALL_NEWS_SET[Number(news)-1])["article_url"]
       if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']) {
             handlerInput.responseBuilder.addDirective({
@@ -55,8 +55,8 @@ const TouchListHandler = {
 
 
         return handlerInput.responseBuilder
-        .speak("You have clicked on a news article. We will now open the link. Enjoy your reading.")
-        .withShouldEndSession(true)
+        .speak("You have clicked on "+header_title+". We will now open the link. You can say flash briefing to start over")
+        .withShouldEndSession(false)
         .getResponse();
     }
 }
