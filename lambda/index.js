@@ -199,9 +199,11 @@ const YesIntentHandler = {
               .getResponse();
         }
         else{
+          console.log("last news")
           return handlerInput.responseBuilder
-                      .speak(LAST_NEWS)
+                      .speak("You have now finished hearing about all the news for today")
                       .withShouldEndSession(true)
+                      .getResponse();
         }
       }
 
