@@ -38,14 +38,14 @@ const TouchListHandler = {
             handlerInput.responseBuilder.addDirective({
                 type: 'Alexa.Presentation.APL.RenderDocument',
                 document: dummy_document,
-                token: 'jip'
+                token: 'opennews'
             });
 
             var urlToGo="https://www.nytimes.com/2023/03/19/world/europe/putin-mariupol-crimea-ukraine.html";
 
             handlerInput.responseBuilder.addDirective({
                 type: "Alexa.Presentation.APL.ExecuteCommands",
-                token: 'jip',
+                token: 'opennews',
                 commands: [{
                   type: "OpenURL",
                   source: news_url
