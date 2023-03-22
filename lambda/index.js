@@ -99,7 +99,7 @@ const GetNewsIntentHandler = {
         for (var i=0;i<STEP;i++){
           news_set=news_set+result[i]["headline"]+"<break time='2s'/>"+" ";
           if(i===STEP-1){
-            sessionAttributes.lastSpeech = result[i]["headline"];
+            sessionAttributes.lastSpeech = news_set;
           }
 
         }
@@ -183,7 +183,7 @@ const YesIntentHandler = {
         for (var i=NEWSINDEX;i<NEWSINDEX+STEP;i++){
           news_set=news_set+ALL_NEWS_SET[i]["headline"]+"<break time='2s'/>"+" ";
           if(i===NEWSINDEX+STEP-1){
-            sessionAttributes.lastSpeech = ALL_NEWS_SET[i]["headline"];
+            sessionAttributes.lastSpeech = news_set;
           }
 
         }
@@ -331,6 +331,27 @@ const ErrorHandler = {
             .reprompt(speakOutput)
             .getResponse();
     }
+};
+
+const RepeatIntentHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'IntentRequest'
+      && request.intent.name === 'AMAZON.RepeatIntent';
+  },
+  handle(handlerInput) {
+
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+    const REPEAT = sessionAttributes.lastSpeech
+
+    console.log("I am in repeat handler")
+    console.log(REPEAT)
+    return handlerInput.responseBuilder
+      .speak(REPEAT+" Would you like more news?")
+      .reprompt(REPEAT+" Would you like more news?")
+      .getResponse();
+  },
 };
 
 const FallbackIntentHandler = {
