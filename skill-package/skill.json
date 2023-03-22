@@ -44,6 +44,14 @@
               {
                 "mode": "HUB",
                 "shape": "RECTANGLE",
+                "minHeight": 100,
+                "maxHeight": 599,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
                 "minHeight": 600,
                 "maxHeight": 959,
                 "minWidth": 960,
@@ -54,6 +62,46 @@
                 "shape": "RECTANGLE",
                 "minHeight": 600,
                 "maxHeight": 1279,
+                "minWidth": 1280,
+                "maxWidth": 1920
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 960,
+                "maxHeight": 1279,
+                "minWidth": 1920,
+                "maxWidth": 2560
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 1920,
+                "maxHeight": 2560,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "MOBILE",
+                "shape": "RECTANGLE",
+                "minHeight": 320,
+                "maxHeight": 1920,
+                "minWidth": 600,
+                "maxWidth": 959
+              },
+              {
+                "mode": "MOBILE",
+                "shape": "RECTANGLE",
+                "minHeight": 320,
+                "maxHeight": 1920,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "MOBILE",
+                "shape": "RECTANGLE",
+                "minHeight": 320,
+                "maxHeight": 1920,
                 "minWidth": 1280,
                 "maxWidth": 1920
               },

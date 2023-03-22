@@ -1,7 +1,7 @@
 const Alexa = require('ask-sdk-core');
 var requestlib = require('request');
 const mydocument = require('main.json')
-const dummy_document = require('dummy.json')
+const cover_page_onurlclick = require('cover_page_onurlclick.json')
 
 
 const SKILL_NAME ="New York Times News"
@@ -9,7 +9,6 @@ const STOP_MESSAGE = 'Goodbye! Thanks for listening to New York Times flash brie
 const HELP_MESSAGE = 'You can say launch flash news briefing, or, you can say stop... What can I help you with?';
 const HELP_REPROMPT = 'What can I help you with?';
 var ALL_NEWS_SET;
-//var INTROS=["Leading the news today is the headline ","In other news we also have a story ", "Third on the list is the following headline ","The New York Times reports as follows: ","Our last headline of the day is as follows: "]
 var MAX
 const STEP = 5
 var NEWSINDEX=0
@@ -30,7 +29,7 @@ const TouchListHandler = {
       if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']) {
             handlerInput.responseBuilder.addDirective({
                 type: 'Alexa.Presentation.APL.RenderDocument',
-                document: dummy_document,
+                document: cover_page_onurlclick,
                 token: 'opennews'
             });
 
@@ -143,8 +142,6 @@ const GetNewsIntentHandler = {
               .reprompt('Would you like some more news?')
               .addDirective(news_speech_directive)
 
-          console.log(result[0])
-
 
           return news_response.getResponse()
             }
@@ -168,10 +165,6 @@ const YesIntentHandler = {
     },
     handle(handlerInput) {
       const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-      console.log(sessionAttributes)
-      console.log(NEWSINDEX)
-      console.log(MAX)
-      console.log(STEP)
       var response_string = ""
       var j=0
 
@@ -340,16 +333,21 @@ const RepeatIntentHandler = {
       && request.intent.name === 'AMAZON.RepeatIntent';
   },
   handle(handlerInput) {
-
+    var repeat
+    console.log("I am in repeat handler")
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-    const REPEAT = sessionAttributes.lastSpeech
 
-    console.log("I am in repeat handler")
+    if (Alexa.getSupportedInterfaces(handlerInput.requestEnvelope)['Alexa.Presentation.APL']){
+       REPEAT = sessionAttributes.lastSpeech
+    }
+    else{
+      REPEAT = "You can say launch flash briefing to start over"
+    }
+
     console.log(REPEAT)
     return handlerInput.responseBuilder
-      .speak(REPEAT+" Would you like more news?")
-      .reprompt(REPEAT+" Would you like more news?")
+      .speak(REPEAT)
       .getResponse();
   },
 };
@@ -410,6 +408,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         ExitIntentHandler,
         SessionEndedRequestHandler,
         sendEventHandler,
+        RepeatIntentHandler,
         IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
         )
     .addErrorHandlers(
