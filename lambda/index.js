@@ -33,7 +33,7 @@ const TouchListHandler = {
                 token: 'opennews'
             });
 
-            var urlToGo="https://www.nytimes.com/2023/03/19/world/europe/putin-mariupol-crimea-ukraine.html";
+//            var urlToGo="https://www.nytimes.com/2023/03/19/world/europe/putin-mariupol-crimea-ukraine.html";
 
             handlerInput.responseBuilder.addDirective({
                 type: "Alexa.Presentation.APL.ExecuteCommands",
